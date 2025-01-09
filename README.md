@@ -1,12 +1,19 @@
-- 👋 Hi, I’m @MrCatLua
-- 👀 I’m interested in ...
-- 🌱 I’m currently learning ...
-- 💞️ I’m looking to collaborate on ...
-- 📫 How to reach me ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
+-- Define a function to calculate the factorial of a number
+function factorial(n)
+    if n == 0 then
+        return 1
+    else
+        return n * factorial(n - 1)
+    end
+end
 
-<!---
-MrCatLua/MrCatLua is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
+-- Main program
+local number = 5  -- Define a variable 'number' with value 5
+print("Factorial of " .. number .. " is " .. factorial(number))
+
+-- Control structures
+local sum = 0
+for i = 1, 10 do
+    sum = sum + i
+end
+print("Sum of numbers from 1 to 10 is " .. sum)
