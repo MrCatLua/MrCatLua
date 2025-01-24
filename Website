@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+            margin-top: 20px;
+        }
+        img {
+            margin: 20px auto;
+            max-width: 90%;
+            height: auto;
+            border: 5px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        p {
+            color: #555;
+            font-size: 18px;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Cat Website</h1>
+    <p>Here's a cute cat to brighten your day!</p>
+    <img src="https://placekitten.com/800/500" alt="A cute cat">
+    <footer>&copy; 2025 Cat Lovers Inc.</footer>
+</body>
+</html>
