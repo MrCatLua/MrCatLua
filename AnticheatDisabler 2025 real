@@ -1,0 +1,110 @@
+-- AntiCheatDisabler_Speed50.lua
+-- A script to disable anti-cheat and set player's speed to 50 in Roblox BedWars
+
+local AntiCheatDisabler = {}
+
+-- Variables
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local forceField = character:FindFirstChildWhichIsA("ForceField")
+local matchState = 0  -- 0: Inactive state, 1: Active match
+local disablerActive = false -- Track if the disabler is active
+local UIService = game:GetService("UserInputService")
+
+-- Function to create a warning message
+local function createWarning(title, message, duration)
+    print("Warning: " .. title .. " - " .. message)
+    -- Placeholder for UI pop-up or notification (can be expanded with a GUI)
+    -- Example: Use a simple GUI text label for notifications
+end
+
+-- Function to disable the anti-cheat system and set speed to 50
+local function disableAntiCheatAndSpeed()
+    if matchState == 0 or forceField then
+        -- Anti-cheat disabling logic: freeze the player for a moment
+        task.spawn(function()
+            -- Temporarily set humanoid to Dead state to bypass anti-cheat detection
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
+            humanoid:ChangeState(Enum.HumanoidStateType.Dead)
+
+            -- Wait until the player starts moving, then unfreeze them
+            repeat
+                task.wait()
+            until humanoid.MoveDirection ~= Vector3.zero
+
+            -- Short wait before resuming
+            task.wait(0.2)
+
+            -- Resume normal humanoid behavior
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
+            humanoid:ChangeState(Enum.HumanoidStateType.Running)
+
+            -- Set WalkSpeed to 50
+            humanoid.WalkSpeed = 50
+
+            -- Inform player about the changes
+            createWarning("AnticheatDisabler", "Anti-Cheat Disabled & Speed set to 50!", 10)
+        end)
+    else
+        -- If force field is not present or matchState isn't inactive, show failure
+        createWarning("AnticheatDisabler", "Failed to disable anti-cheat. ForceField or matchState issue.", 10)
+    end
+end
+
+-- Function to check player conditions (health, force field, etc.)
+local function checkPlayerConditions()
+    -- Ensure the player has no ForceField protection
+    if not forceField then
+        createWarning("AnticheatDisabler", "No ForceField found for the player, unable to disable anti-cheat.", 5)
+        return false
+    end
+
+    -- Ensure the player is alive
+    if humanoid.Health <= 0 then
+        createWarning("AnticheatDisabler", "Player is dead, anti-cheat cannot be disabled.", 5)
+        return false
+    end
+
+    return true
+end
+
+-- Main function to trigger the anti-cheat disabler and set speed
+local function triggerAntiCheatDisabler()
+    if disablerActive then
+        createWarning("AnticheatDisabler", "Disabler is already active.", 5)
+        return
+    end
+
+    -- Check if the player meets the conditions for disabling
+    if not checkPlayerConditions() then
+        return
+    end
+
+    -- Disable anti-cheat and set the player's speed
+    disableAntiCheatAndSpeed()
+
+    -- Mark disabler as active
+    disablerActive = true
+end
+
+-- Function to listen for keypress to trigger the disabler (F5 key in this example)
+local function listenForInput()
+    UIService.InputBegan:Connect(function(input, gameProcessed)
+        if gameProcessed then return end -- Ignore if the input is already processed by the game
+
+        if input.KeyCode == Enum.KeyCode.F5 then  -- F5 to trigger the disabler
+            triggerAntiCheatDisabler()
+        end
+    end)
+end
+
+-- Initialize and listen for user input
+listenForInput()
+
+-- Start the script and notify the user of initialization
+createWarning("AntiCheatDisabler", "Anti-Cheat Disabler with Speed set to 50 Initialized", 5)
+
+-- Example: Automatically attempt to disable anti-cheat and set speed when the game starts
+triggerAntiCheatDisabler()
+
