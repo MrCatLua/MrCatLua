@@ -1,0 +1,213 @@
+```lua
+-- meteor script
+local meteor = {}
+meteor.tabs = {}
+meteor.tabs.combat = {}
+meteor.tabs.render = {}
+meteor.tabs.world = {}
+meteor.tabs.misc = {}
+meteor.tabs.settings = {}
+meteor.tabs.utility = {}
+
+-- load meteorv3 file
+local meteorv3 = loadstring(game:HttpGet("https://raw.githubusercontent.com/executor/workspace/MeteorV3.lua"))()
+
+-- combat tab
+meteor.tabs.combat.autoclicker = true
+meteor.tabs.combat.aimassist = true
+meteor.tabs.combat.triggerbot = true
+meteor.tabs.combat.sprint = true
+
+-- utility tab
+meteor.tabs.utility.acdisabler = true
+meteor.tabs.utility.infinitejump = true
+meteor.tabs.utility.fly = true
+meteor.tabs.utility.inffly = true
+meteor.tabs.utility.longjump = true
+meteor.tabs.utility.highjump = true
+
+-- render tab
+meteor.tabs.render.esp = true
+meteor.tabs.render.chams = true
+meteor.tabs.render.tracers = true
+
+-- world tab
+meteor.tabs.world.noclip = true
+meteor.tabs.world.speed = 10
+
+-- misc tab
+meteor.tabs.misc.bhop = true
+
+-- settings tab
+meteor.tabs.settings.ui = true
+meteor.tabs.settings.notify = true
+
+-- op features
+local opfeatures = {}
+opfeatures.sunlightv6 = {}
+opfeatures.sunlightv6.aimbot = {
+enabled = true,
+fov = 100,
+speed = 10
+}
+opfeatures.sunlightv6.esp = {
+enabled = true,
+color = Color3.fromRGB(255, 0, 0)
+}
+opfeatures.sunlightv6.triggerbot = {
+enabled = true,
+delay = 0.1
+}
+
+-- functions
+local function combat()
+if meteor.tabs.combat.autoclicker then
+-- autoclicker code
+for i, v in pairs(game.Players:GetPlayers()) do
+if v ~= game.Players.LocalPlayer then
+game.ReplicatedStorage.MainEvent:FireServer("Click", v.Character.HumanoidRootPart.CFrame)
+end
+end
+end
+if meteor.tabs.combat.aimassist then
+-- aimassist code
+local aimpart = game.Players.LocalPlayer.Character.HumanoidRootPart
+local closestplayer = nil
+local closestplayerdistance = math.huge
+for i, v in pairs(game.Players:GetPlayers()) do
+if v ~= game.Players.LocalPlayer then
+local distance = (aimpart.Position - v.Character.HumanoidRootPart.Position).Magnitude
+```if distance < closestplayerdistance then
+closestplayerdistance = distance
+closestplayer = v
+end
+end
+end
+if closestplayer then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = closestplayer.Character.HumanoidRootPart.CFrame
+end
+end
+if meteor.tabs.combat.triggerbot then
+-- triggerbot code
+for i, v in pairs(game.Players:GetPlayers()) do
+if v ~= game.Players.LocalPlayer then
+game.ReplicatedStorage.MainEvent:FireServer("Shoot", v.Character.HumanoidRootPart.CFrame)
+end
+end
+end
+if meteor.tabs.combat.sprint then
+-- sprint code
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 30
+end
+end
+
+local function utility()
+if meteor.tabs.utility.acdisabler then
+-- acdisabler code
+game.ReplicatedStorage.MainEvent:FireServer("DisableAC")
+end
+if meteor.tabs.utility.infinitejump then
+-- infinitejump code
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = 100
+end
+if meteor.tabs.utility.fly then
+-- fly code
+game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 10, 0)
+end
+if meteor.tabs.utility.inffly then
+-- inffly code
+game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 100, 0)
+end
+if meteor.tabs.utility.longjump then
+-- longjump code
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+end
+if meteor.tabs.utility.highjump then
+-- highjump code
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = 100
+end
+end
+
+local function render()
+if meteor.tabs.render.esp then
+-- esp code
+for i, v in pairs(game.Players:GetPlayers()) do
+if v ~= game.Players.LocalPlayer then
+local box = Instance.new("BoxHandleAdornment")
+box.Parent = v.Character.HumanoidRootPart
+box.Adornee = v.Character.HumanoidRootPart
+box.Color = Color3.fromRGB(255, 0, 0)
+boxTransparency = 0
+end
+end
+end
+if meteor.tabs.render.chams then
+-- chams code
+for i, v in pairs(game.Players:GetPlayers()) do
+if v ~= game.Players.LocalPlayer then
+local chams = Instance.new("Highlight")
+chams.Parent = v.Character.HumanoidRootPart```[]
+chams.Adornee = v.Character.HumanoidRootPart
+chams.OutlineColor = Color3.fromRGB(255, 0, 0)
+chams.OutlineTransparency = 0
+end
+end
+end
+if meteor.tabs.render.tracers then
+-- tracers code
+for i, v in pairs(game.Players:GetPlayers()) do
+if v ~= game.Players.LocalPlayer then
+local tracer = Instance.new("Trail")
+tracer.Parent = v.Character.HumanoidRootPart
+tracer.Lifetime = 1
+tracer.Transparency = NumberSequence.new{
+NumberSequenceKeypoint.new(0, 0),
+NumberSequenceKeypoint.new(1, 1)
+}
+tracer.Color = ColorSequence.new{
+ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
+ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
+}
+end
+end
+end
+end
+
+local function world()
+if meteor.tabs.world.noclip then
+-- noclip code
+game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = false
+end
+if meteor.tabs.world.speed then
+-- speed code
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 30
+end
+end
+
+local function misc()
+if meteor.tabs.misc.bhop then
+-- bhop code
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+end
+end
+
+-- connections
+game:GetService("UserInputService").InputBegan:Connect(function(input)
+if input.KeyCode == Enum.KeyCode.MouseButton1 then
+combat()
+end
+end)
+
+game:GetService("RunService").RenderStepped:Connect(function()
+render()
+end)
+
+game:GetService("RunService").Heartbeat:Connect(function()
+world()
+misc()
+utility()
+end)
+
+print("meteor script loaded")
+```
+-# Fallback Engine Used
